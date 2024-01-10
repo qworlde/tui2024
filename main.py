@@ -1,10 +1,12 @@
 import pygame
+import random
 
 pygame.init()
 
 W, H = 800, 600
 WB, HB = 50, 475
 WM, HM = 150, 120
+WMR, HMR= 150, 120
 WK, HK = 150, 170
 HK2 = 220
 W4, H4 = 150, 270
@@ -74,15 +76,24 @@ for i in range(11):
     n4i.add(n4(W4, H42))
     W4 += 50
 
+#kinzal
+knife = pygame.image.load('knife.png').convert_alpha()
+r_knife = knife.get_rect(center = (WM, HM))
+knife.set_alpha(0)
+
 speed_tr = 3
 speed_bullet = 5
-speed_m = 0.5
 p = 1
 fb = 0
 c = 0
 v = 0
+time = random.randint(10, 100)
+fg = random.randint(1, 11)
+fk = 0
 
 while True:
+    if fk == 0:
+        v += 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -107,73 +118,34 @@ while True:
             r_bullet.x = r_tr.x + 18
             r_bullet.y = HB
 
-    if p == 1:
-        for n in n4i:
-            if n.rect.x >= 740:
-                c += 1
-                for n1 in n4i:
-                    n1.rect.y += 50
-                break
-            else:
-                n.rect.x += 0.5
-        
-        for kr in krabi:
-            if kr.rect.x == 740:
-                c += 1
-                for kr1 in krabi:
-                    kr1.rect.y += 50
-                break
-            else:
-                kr.rect.x += 0.5
-
-        for med in medusi:
-            if med.rect.x >= 740:
-                c += 1
-                for med1 in medusi:
-                    med1.rect.y += 50
-                break
-            else:
-                med.rect.x += 0.5
-    else:
-        print(p)
-        for n in n4i:
-            n.rect.x -= 0.5
-            if n.rect.x <= 0:
-                v += 1
-                for n1 in n4i:
-                    n1.rect.y += 50
-                break
-            else:
-                n.rect.x -= 0.5
-
-        for kr in krabi:
-            kr.rect.x -= 0
-            if kr.rect.x <= 0:
-                v += 1
-                for kr1 in krabi:
-                    kr1.rect.y += 50
-                break
-            else:
-                kr.rect.x -= 0.5
-
-        for med in medusi:
-            med.rect.x -= 0.5
-            if med.rect.x <= 0:
-                v += 1
-                for med1 in medusi:
-                    med1.rect.y += 50
-                break
-            else:
-                med.rect.x -= 0.5
-
-    if c == 3:
-        p = 0
-        c = 0
-
-    if v == 3:
-        p = 1
+    if time == v and fk == 0:
         v = 0
-        
+        for med in medusi:
+            c += 1
+            if c == fg:
+                print(c)
+                c = 0
+                r_knife.x = WMR + 50 * fg
+                fk = 1
+                fg = random.randint(1, 11)
+                break
+
+    if fk == 1:
+        if r_knife.y <= 600:
+            knife.set_alpha(255)
+            r_knife.y += 5
+            if r_tr.collidepoint(r_knife.center):
+                lives -= 1
+                time = random.randint(10, 100)
+                knife.set_alpha(0)
+                r_knife.y = HMR
+                fk = 0
+        else:
+            time = random.randint(10, 100)
+            knife.set_alpha(0)
+            r_knife.y = HMR
+            fk = 0
+
     for n in n4i:
         if r_bullet.collidepoint(n.rect.center):
             n.kill()
@@ -220,6 +192,7 @@ while True:
     medusi.draw(sc)
     krabi.draw(sc)
     n4i.draw(sc)
+    sc.blit(knife, r_knife)
 
     pygame.display.update()
     clock.tick(FPS)
