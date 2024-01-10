@@ -173,26 +173,30 @@ while True:
             r_bullet.y = HB
             score += 40
 
-    scorep = f.render(str(score), 1, (0, 255, 0))
-    sc.blit(surf, (0, 0))
-    sc.blit(scb, (10, 10))
-    sc.blit(scorep, (110, 10))
-    sc.blit(livb, (300, 10))
-    if lives >= 1:
-        sc.blit(tr, (375, 10))
-    if lives >= 2:
-        sc.blit(tr, (375, 10))
-        sc.blit(tr, (460, 10))
-    if lives == 3:
-        sc.blit(tr, (375, 10))
-        sc.blit(tr, (460, 10))
-        sc.blit(tr, (545, 10))
-    sc.blit(tr, r_tr)
-    sc.blit(bullet, r_bullet)
-    medusi.draw(sc)
-    krabi.draw(sc)
-    n4i.draw(sc)
-    sc.blit(knife, r_knife)
+    if lives <= 0:
+        loose = pygame.image.load('l.png')
+        sc.blit(loose, (0, 0))
+    else:
+        scorep = f.render(str(score), 1, (0, 255, 0))
+        sc.blit(surf, (0, 0))
+        sc.blit(scb, (10, 10))
+        sc.blit(scorep, (110, 10))
+        sc.blit(livb, (300, 10))
+        if lives >= 1:
+            sc.blit(tr, (375, 10))
+        if lives >= 2:
+            sc.blit(tr, (375, 10))
+            sc.blit(tr, (460, 10))
+        if lives == 3:
+            sc.blit(tr, (375, 10))
+            sc.blit(tr, (460, 10))
+            sc.blit(tr, (545, 10))
+        sc.blit(tr, r_tr)
+        sc.blit(bullet, r_bullet)
+        medusi.draw(sc)
+        krabi.draw(sc)
+        n4i.draw(sc)
+        sc.blit(knife, r_knife)
 
     pygame.display.update()
     clock.tick(FPS)
