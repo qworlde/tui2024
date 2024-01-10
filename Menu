@@ -3,26 +3,21 @@ import pygame
 import sys
 import random
 import subprocess
-import time
-
 pygame.init()
-
 window_width = 800
 window_height = 600
 screen = pygame.display.set_mode((window_width, window_height))
+pygame.display.set_caption("Space Invaders 2")
+
 white = (255, 255, 255)
 black = (0, 0, 0)
 font = pygame.font.Font(None, 36)
-
-imay = pygame.image.load("background//main_menu.png").convert()
-
 
 def draw_text(text, font, color, x, y):
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect()
     text_rect.center = (x, y)
     screen.blit(text_surface, text_rect)
-
 
 def main_menu():
     while True:
@@ -33,25 +28,68 @@ def main_menu():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button_rect.collidepoint(event.pos):
                     return
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if hard_mod_button_rect.collidepoint(event.pos):
+                    return
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if easy_button_rect.collidepoint(event.pos):
+                    return
 
-        screen.blit(imay, (0, 0))
-        start_button_rect = pygame.draw.rect(screen, (0, 255, 0), ((310, 460, 200, 80)
-        ))
-        draw_text("START", font, black, 410, 500)
+        imagis = pygame.image.load("menu//backgrounders//2_menu_3.png").convert()
+        screen.blit(imagis, (0, 0))
+        easy_button_rect = pygame.draw.rect(screen, (0, 0, 255), ((300, 160, 200, 80)))
+        start_button_rect = pygame.draw.rect(screen, (0, 255, 0), ((300, 260, 200, 80)))
+        hard_mod_button_rect = pygame.draw.rect(screen, (255, 0, 0), ((300, 360, 200, 80)))
+        draw_text("EASY MODE", font, black, window_width // 2, window_height // 3)
+        draw_text("NORMAL MODE", font, black, window_width // 2, window_height // 2)
+        draw_text("HARD MODE", font, black, window_width // 2, window_height // 2 + 100)
         pygame.display.flip()
 
 
 def game_screen():
     game_in_progress = False
-
+    based = False
+    noob = False
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        game_path = os.path.join(script_dir, 'menu', 'menu.py')
-        subprocess.run([sys.executable, game_path])
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button_rect.collidepoint(event.pos):
+                    game_in_progress = True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if hard_mod_button_rect.collidepoint(event.pos):
+                        based = True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if easy_button_rect.collidepoint(event.pos):
+                        noob = True
+        easy_button_rect = pygame.draw.rect(screen, (0, 0, 255), ((300, 160, 200, 80)))
+        start_button_rect = pygame.draw.rect(screen, (0, 255, 0), ((300, 260, 200, 80)))
+        hard_mod_button_rect = pygame.draw.rect(screen, (255, 0, 0), ((300, 360, 200, 80)))
+        if game_in_progress:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            game_path = os.path.join(script_dir, 'game', 'game.py')
+            subprocess.run([sys.executable, game_path])
+            return
+        if based:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            game_path = os.path.join(script_dir, 'hard_mod', 'hard_mod.py')
+            subprocess.run([sys.executable, game_path])
+        if noob:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            game_path = os.path.join(script_dir, 'easy_mod', 'easy_mod.py')
+            subprocess.run([sys.executable, game_path])
+        else:
+            imagis = pygame.image.load("menu//backgrounders//2_menu_3.png").convert()
+            screen.blit(imagis, (0, 0))
+            easy_button_rect = pygame.draw.rect(screen, (0, 0, 255), ((300, 160, 200, 80)))
+            start_button_rect = pygame.draw.rect(screen, (0, 255, 0), ((300, 260, 200, 80)))
+            hard_mod_button_rect = pygame.draw.rect(screen, (255, 0, 0), ((300, 360, 200, 80)))
+            draw_text("EASY MODE", font, black, window_width // 2, window_height // 3)
+            draw_text("NORMAL MODE", font, black, window_width // 2, window_height // 2)
+            draw_text("HARD MODE", font, black, window_width // 2, window_height // 2 + 100)
+        pygame.display.flip()
 
 main_menu()
 game_screen()
