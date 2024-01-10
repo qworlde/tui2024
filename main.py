@@ -81,13 +81,13 @@ knife = pygame.image.load('knife.png').convert_alpha()
 r_knife = knife.get_rect(center = (WM, HM))
 knife.set_alpha(0)
 
-speed_tr = 3
-speed_bullet = 5
+speed_tr = 4
+speed_bullet = 4
 p = 1
 fb = 0
 c = 0
 v = 0
-time = random.randint(10, 100)
+time = random.randint(100, 500)
 fg = random.randint(1, 11)
 fk = 0
 
