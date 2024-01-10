@@ -3,18 +3,19 @@ import pygame
 import sys
 import random
 import subprocess
+import time
+
 pygame.init()
 
 window_width = 800
 window_height = 600
 screen = pygame.display.set_mode((window_width, window_height))
-pygame.display.set_caption("Space Invaders 2")
-
 white = (255, 255, 255)
 black = (0, 0, 0)
 font = pygame.font.Font(None, 36)
 
-imay = pygame.image.load("background//background.png").convert()
+imay = pygame.image.load("background//main_menu.png").convert()
+
 
 def draw_text(text, font, color, x, y):
     text_surface = font.render(text, True, color)
@@ -33,12 +34,12 @@ def main_menu():
                 if start_button_rect.collidepoint(event.pos):
                     return
 
-        screen.blit(imay,(0,0))
-        start_button_rect = pygame.draw.rect(screen, (0, 255, 0), ((300,260,200,80)
-))
-        draw_text("Space Invaders 2", font, black, 400, 200)
-        draw_text("START", font, black, window_width//2, window_height//2)
+        screen.blit(imay, (0, 0))
+        start_button_rect = pygame.draw.rect(screen, (0, 255, 0), ((310, 460, 200, 80)
+        ))
+        draw_text("START", font, black, 410, 500)
         pygame.display.flip()
+
 
 def game_screen():
     game_in_progress = False
@@ -51,5 +52,6 @@ def game_screen():
         script_dir = os.path.dirname(os.path.abspath(__file__))
         game_path = os.path.join(script_dir, 'menu', 'menu.py')
         subprocess.run([sys.executable, game_path])
+
 main_menu()
 game_screen()
